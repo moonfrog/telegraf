@@ -3,7 +3,7 @@
 The [MQTT](http://mqtt.org/) consumer plugin reads from
 specified MQTT topics and adds messages to InfluxDB.
 The plugin expects messages in the
-[Telegraf Input Data Formats](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md).
+[Telegraf Input Data Formats](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md).
 
 ### Configuration:
 
@@ -42,7 +42,7 @@ The plugin expects messages in the
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "influx"
 ```
 

@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 )
 
 type MetricMaker interface {

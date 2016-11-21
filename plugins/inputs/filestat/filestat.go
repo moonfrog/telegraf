@@ -6,9 +6,9 @@ import (
 	"io"
 	"os"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/internal/globpath"
-	"github.com/influxdata/telegraf/plugins/inputs"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/internal/globpath"
+	"github.com/moonfrog/telegraf/plugins/inputs"
 )
 
 const sampleConfig = `

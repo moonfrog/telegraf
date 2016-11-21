@@ -15,7 +15,7 @@ via raw TCP.
   ## Prefix metrics name
   prefix = ""
   ## Graphite output template
-  ## see https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  ## see https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
   template = "host.tags.measurement.field"
   ## timeout in seconds for the write connection to graphite
   timeout = 2
@@ -32,5 +32,5 @@ Parameters:
 * `prefix`: String use to prefix all sent metrics.
 * `timeout`: Connection timeout in seconds.
 * `template`: Template for graphite output format, see
-https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
 for more details.

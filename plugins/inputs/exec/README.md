@@ -1,6 +1,6 @@
 # Exec Input Plugin
 
-Please also see: [Telegraf Input Data Formats](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md)
+Please also see: [Telegraf Input Data Formats](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md)
 
 ### Example 1 - JSON
 

@@ -9,8 +9,8 @@ import (
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/load"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/plugins/inputs"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/plugins/inputs"
 )
 
 type SystemStats struct{}

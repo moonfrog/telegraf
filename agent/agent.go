@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/internal"
-	"github.com/influxdata/telegraf/internal/config"
-	"github.com/influxdata/telegraf/internal/models"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/internal"
+	"github.com/moonfrog/telegraf/internal/config"
+	"github.com/moonfrog/telegraf/internal/models"
 )
 
 // Agent runs telegraf and collects data based on the given config
@@ -92,7 +92,7 @@ func panicRecover(input *models.RunningInput) {
 			input.Name(), err, trace)
 		log.Println("E! PLEASE REPORT THIS PANIC ON GITHUB with " +
 			"stack trace, configuration, and OS information: " +
-			"https://github.com/influxdata/telegraf/issues/new")
+			"https://github.com/moonfrog/telegraf/issues/new")
 	}
 }
 

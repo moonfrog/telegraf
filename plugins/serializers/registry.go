@@ -1,11 +1,11 @@
 package serializers
 
 import (
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 
-	"github.com/influxdata/telegraf/plugins/serializers/graphite"
-	"github.com/influxdata/telegraf/plugins/serializers/influx"
-	"github.com/influxdata/telegraf/plugins/serializers/json"
+	"github.com/moonfrog/telegraf/plugins/serializers/graphite"
+	"github.com/moonfrog/telegraf/plugins/serializers/influx"
+	"github.com/moonfrog/telegraf/plugins/serializers/json"
 )
 
 // SerializerOutput is an interface for output plugins that are able to

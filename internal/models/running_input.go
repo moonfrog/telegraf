@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 )
 
 type RunningInput struct {

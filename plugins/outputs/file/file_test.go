@@ -9,9 +9,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/influxdata/telegraf/internal"
-	"github.com/influxdata/telegraf/plugins/serializers"
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf/internal"
+	"github.com/moonfrog/telegraf/plugins/serializers"
+	"github.com/moonfrog/telegraf/testutil"
 )
 
 const (

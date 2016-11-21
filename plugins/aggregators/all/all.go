@@ -1,5 +1,5 @@
 package all
 
 import (
-	_ "github.com/influxdata/telegraf/plugins/aggregators/minmax"
+	_ "github.com/moonfrog/telegraf/plugins/aggregators/minmax"
 )

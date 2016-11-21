@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/plugins/inputs"
-	jsonparser "github.com/influxdata/telegraf/plugins/parsers/json"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/plugins/inputs"
+	jsonparser "github.com/moonfrog/telegraf/plugins/parsers/json"
 )
 
 type Role string

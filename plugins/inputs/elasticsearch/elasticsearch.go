@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/internal"
-	"github.com/influxdata/telegraf/internal/errchan"
-	"github.com/influxdata/telegraf/plugins/inputs"
-	jsonparser "github.com/influxdata/telegraf/plugins/parsers/json"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/internal"
+	"github.com/moonfrog/telegraf/internal/errchan"
+	"github.com/moonfrog/telegraf/plugins/inputs"
+	jsonparser "github.com/moonfrog/telegraf/plugins/parsers/json"
 )
 
 const statsPath = "/_nodes/stats"

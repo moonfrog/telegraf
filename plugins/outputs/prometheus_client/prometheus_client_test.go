@@ -7,10 +7,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/internal"
-	"github.com/influxdata/telegraf/plugins/inputs/prometheus"
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/internal"
+	"github.com/moonfrog/telegraf/plugins/inputs/prometheus"
+	"github.com/moonfrog/telegraf/testutil"
 )
 
 var pTesting *PrometheusClient

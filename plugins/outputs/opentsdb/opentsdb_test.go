@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/testutil"
 	//"github.com/stretchr/testify/require"
 )
 

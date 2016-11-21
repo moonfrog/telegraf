@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 )
 
 type RunningProcessor struct {

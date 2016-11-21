@@ -10,9 +10,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/cloudwatch"
 
-	"github.com/influxdata/telegraf"
-	internalaws "github.com/influxdata/telegraf/internal/config/aws"
-	"github.com/influxdata/telegraf/plugins/outputs"
+	"github.com/moonfrog/telegraf"
+	internalaws "github.com/moonfrog/telegraf/internal/config/aws"
+	"github.com/moonfrog/telegraf/plugins/outputs"
 )
 
 type CloudWatch struct {
@@ -48,7 +48,7 @@ var sampleConfig = `
   #shared_credential_file = ""
 
   ## Namespace for the CloudWatch MetricDatums
-  namespace = "InfluxData/Telegraf"
+  namespace = "moonfrog/telegraf"
 `
 
 func (c *CloudWatch) SampleConfig() string {

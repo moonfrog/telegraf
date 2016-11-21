@@ -4,12 +4,12 @@
 1. Make changes or write plugin (see below for details)
 1. Add your plugin to one of: `plugins/{inputs,outputs,aggregators,processors}/all/all.go`
 1. If your plugin requires a new Go package,
-[add it](https://github.com/influxdata/telegraf/blob/master/CONTRIBUTING.md#adding-a-dependency)
+[add it](https://github.com/moonfrog/telegraf/blob/master/CONTRIBUTING.md#adding-a-dependency)
 1. Write a README for your plugin, if it's an input plugin, it should be structured
-like the [input example here](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/EXAMPLE_README.md).
+like the [input example here](https://github.com/moonfrog/telegraf/blob/master/plugins/inputs/EXAMPLE_README.md).
 Output plugins READMEs are less structured,
 but any information you can provide on how the data will look is appreciated.
-See the [OpenTSDB output](https://github.com/influxdata/telegraf/tree/master/plugins/outputs/opentsdb)
+See the [OpenTSDB output](https://github.com/moonfrog/telegraf/tree/master/plugins/outputs/opentsdb)
 for a good example.
 1. **Optional:** Help users of your plugin by including example queries for populating dashboards. Include these sample queries in the `README.md` for the plugin.
 1. **Optional:** Write a [tickscript](https://docs.influxdata.com/kapacitor/v1.0/tick/syntax/) for your plugin and add it to [Kapacitor](https://github.com/influxdata/kapacitor/tree/master/examples/telegraf). Or mention @jackzampolin in a PR comment with some common queries that you would want to alert on and he will write one for you.
@@ -19,7 +19,7 @@ for a good example.
 Public interfaces for inputs, outputs, processors, aggregators, metrics,
 and the accumulator can be found on the GoDoc
 
-[![GoDoc](https://godoc.org/github.com/influxdata/telegraf?status.svg)](https://godoc.org/github.com/influxdata/telegraf)
+[![GoDoc](https://godoc.org/github.com/moonfrog/telegraf?status.svg)](https://godoc.org/github.com/moonfrog/telegraf)
 
 ## Sign the CLA
 
@@ -46,11 +46,11 @@ and submit new inputs.
 
 ### Input Plugin Guidelines
 
-* A plugin must conform to the [`telegraf.Input`](https://godoc.org/github.com/influxdata/telegraf#Input) interface.
+* A plugin must conform to the [`telegraf.Input`](https://godoc.org/github.com/moonfrog/telegraf#Input) interface.
 * Input Plugins should call `inputs.Add` in their `init` function to register themselves.
 See below for a quick example.
 * Input Plugins must be added to the
-`github.com/influxdata/telegraf/plugins/inputs/all/all.go` file.
+`github.com/moonfrog/telegraf/plugins/inputs/all/all.go` file.
 * The `SampleConfig` function should return valid toml that describes how the
 plugin can be configured. This is include in `telegraf -sample-config`.
 * The `Description` function should say in one line what this plugin does.
@@ -66,8 +66,8 @@ package simple
 // simple.go
 
 import (
-    "github.com/influxdata/telegraf"
-    "github.com/influxdata/telegraf/plugins/inputs"
+    "github.com/moonfrog/telegraf"
+    "github.com/moonfrog/telegraf/plugins/inputs"
 )
 
 type Simple struct {
@@ -107,10 +107,10 @@ for other outputs, such as [prometheus](https://prometheus.io/docs/concepts/metr
 ## Input Plugins Accepting Arbitrary Data Formats
 
 Some input plugins (such as
-[exec](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec))
+[exec](https://github.com/moonfrog/telegraf/tree/master/plugins/inputs/exec))
 accept arbitrary input data formats. An overview of these data formats can
 be found
-[here](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md).
+[here](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md).
 
 In order to enable this, you must specify a `SetParser(parser parsers.Parser)`
 function on the plugin object (see the exec plugin for an example), as well as
@@ -126,7 +126,7 @@ You should also add the following to your SampleConfig() return:
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "influx"
 ```
 
@@ -148,7 +148,7 @@ type Parser interface {
 ```
 
 And you can view the code
-[here.](https://github.com/influxdata/telegraf/blob/henrypfhu-master/plugins/parsers/registry.go)
+[here.](https://github.com/moonfrog/telegraf/blob/henrypfhu-master/plugins/parsers/registry.go)
 
 ## Service Input Plugins
 
@@ -177,11 +177,11 @@ similar constructs.
 
 ### Output Plugin Guidelines
 
-* An output must conform to the [`telegraf.Output`](https://godoc.org/github.com/influxdata/telegraf#Output) interface.
+* An output must conform to the [`telegraf.Output`](https://godoc.org/github.com/moonfrog/telegraf#Output) interface.
 * Outputs should call `outputs.Add` in their `init` function to register themselves.
 See below for a quick example.
 * To be available within Telegraf itself, plugins must add themselves to the
-`github.com/influxdata/telegraf/plugins/outputs/all/all.go` file.
+`github.com/moonfrog/telegraf/plugins/outputs/all/all.go` file.
 * The `SampleConfig` function should return valid toml that describes how the
 output can be configured. This is include in `telegraf -sample-config`.
 * The `Description` function should say in one line what this output does.
@@ -194,8 +194,8 @@ package simpleoutput
 // simpleoutput.go
 
 import (
-    "github.com/influxdata/telegraf"
-    "github.com/influxdata/telegraf/plugins/outputs"
+    "github.com/moonfrog/telegraf"
+    "github.com/moonfrog/telegraf/plugins/outputs"
 )
 
 type Simple struct {
@@ -236,10 +236,10 @@ func init() {
 ## Output Plugins Writing Arbitrary Data Formats
 
 Some output plugins (such as
-[file](https://github.com/influxdata/telegraf/tree/master/plugins/outputs/file))
+[file](https://github.com/moonfrog/telegraf/tree/master/plugins/outputs/file))
 can write arbitrary output data formats. An overview of these data formats can
 be found
-[here](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md).
+[here](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md).
 
 In order to enable this, you must specify a
 `SetSerializer(serializer serializers.Serializer)`
@@ -256,7 +256,7 @@ You should also add the following to your SampleConfig() return:
   ## Data format to output.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
   data_format = "influx"
 ```
 
@@ -281,11 +281,11 @@ This section is for developers who want to create a new processor plugin.
 
 ### Processor Plugin Guidelines
 
-* A processor must conform to the [`telegraf.Processor`](https://godoc.org/github.com/influxdata/telegraf#Processor) interface.
+* A processor must conform to the [`telegraf.Processor`](https://godoc.org/github.com/moonfrog/telegraf#Processor) interface.
 * Processors should call `processors.Add` in their `init` function to register themselves.
 See below for a quick example.
 * To be available within Telegraf itself, plugins must add themselves to the
-`github.com/influxdata/telegraf/plugins/processors/all/all.go` file.
+`github.com/moonfrog/telegraf/plugins/processors/all/all.go` file.
 * The `SampleConfig` function should return valid toml that describes how the
 processor can be configured. This is include in `telegraf -sample-config`.
 * The `Description` function should say in one line what this processor does.
@@ -300,8 +300,8 @@ package printer
 import (
 	"fmt"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/plugins/processors"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/plugins/processors"
 )
 
 type Printer struct {
@@ -338,11 +338,11 @@ This section is for developers who want to create a new aggregator plugin.
 
 ### Aggregator Plugin Guidelines
 
-* A aggregator must conform to the [`telegraf.Aggregator`](https://godoc.org/github.com/influxdata/telegraf#Aggregator) interface.
+* A aggregator must conform to the [`telegraf.Aggregator`](https://godoc.org/github.com/moonfrog/telegraf#Aggregator) interface.
 * Aggregators should call `aggregators.Add` in their `init` function to register themselves.
 See below for a quick example.
 * To be available within Telegraf itself, plugins must add themselves to the
-`github.com/influxdata/telegraf/plugins/aggregators/all/all.go` file.
+`github.com/moonfrog/telegraf/plugins/aggregators/all/all.go` file.
 * The `SampleConfig` function should return valid toml that describes how the
 aggregator can be configured. This is include in `telegraf -sample-config`.
 * The `Description` function should say in one line what this aggregator does.
@@ -359,8 +359,8 @@ package min
 // min.go
 
 import (
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/plugins/aggregators"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/plugins/aggregators"
 )
 
 type Min struct {
@@ -470,7 +470,7 @@ which would take some time to replicate.
 To overcome this situation we've decided to use docker containers to provide a
 fast and reproducible environment to test those services which require it.
 For other situations
-(i.e: https://github.com/influxdata/telegraf/blob/master/plugins/inputs/redis/redis_test.go)
+(i.e: https://github.com/moonfrog/telegraf/blob/master/plugins/inputs/redis/redis_test.go)
 a simple mock will suffice.
 
 To execute Telegraf tests follow these simple steps:

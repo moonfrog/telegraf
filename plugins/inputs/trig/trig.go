@@ -3,8 +3,8 @@ package trig
 import (
 	"math"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/plugins/inputs"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/plugins/inputs"
 )
 
 type Trig struct {

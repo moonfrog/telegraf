@@ -44,7 +44,7 @@ with the format `%{<capture_syntax>[:<semantic_name>][:<modifier>]}`
 
 
 Telegraf has many of it's own
-[built-in patterns](https://github.com/influxdata/telegraf/blob/master/plugins/inputs/logparser/grok/patterns/influx-patterns),
+[built-in patterns](https://github.com/moonfrog/telegraf/blob/master/plugins/inputs/logparser/grok/patterns/influx-patterns),
 as well as supporting
 [logstash's builtin patterns](https://github.com/logstash-plugins/logstash-patterns-core/blob/master/patterns/grok-patterns).
 

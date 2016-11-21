@@ -3,13 +3,13 @@ package parsers
 import (
 	"fmt"
 
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 
-	"github.com/influxdata/telegraf/plugins/parsers/graphite"
-	"github.com/influxdata/telegraf/plugins/parsers/influx"
-	"github.com/influxdata/telegraf/plugins/parsers/json"
-	"github.com/influxdata/telegraf/plugins/parsers/nagios"
-	"github.com/influxdata/telegraf/plugins/parsers/value"
+	"github.com/moonfrog/telegraf/plugins/parsers/graphite"
+	"github.com/moonfrog/telegraf/plugins/parsers/influx"
+	"github.com/moonfrog/telegraf/plugins/parsers/json"
+	"github.com/moonfrog/telegraf/plugins/parsers/nagios"
+	"github.com/moonfrog/telegraf/plugins/parsers/value"
 )
 
 // ParserInput is an interface for input plugins that are able to parse

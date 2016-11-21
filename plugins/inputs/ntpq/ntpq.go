@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/plugins/inputs"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/plugins/inputs"
 )
 
 // Mapping of ntpq header names to tag keys
@@ -74,7 +74,7 @@ func (n *NTPQ) Gather(acc telegraf.Accumulator) error {
 
 		tags := make(map[string]string)
 		// if there is an ntpq state prefix, remove it and make it it's own tag
-		// see https://github.com/influxdata/telegraf/issues/1161
+		// see https://github.com/moonfrog/telegraf/issues/1161
 		if strings.ContainsAny(string(line[0]), "*#o+x.-") {
 			tags["state_prefix"] = string(line[0])
 			line = strings.TrimLeft(line, "*#o+x.-")

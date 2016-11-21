@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/internal"
-	"github.com/influxdata/telegraf/plugins/outputs"
-	"github.com/influxdata/telegraf/plugins/serializers"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/internal"
+	"github.com/moonfrog/telegraf/plugins/outputs"
+	"github.com/moonfrog/telegraf/plugins/serializers"
 
 	"github.com/streadway/amqp"
 )
@@ -92,7 +92,7 @@ var sampleConfig = `
   ## Data format to output.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
   data_format = "influx"
 `
 

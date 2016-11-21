@@ -1,7 +1,7 @@
 package filestack
 
 import (
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf/testutil"
 	"net/http"
 	"net/http/httptest"
 

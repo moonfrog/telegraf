@@ -64,4 +64,4 @@ This plugin writes to a [Kafka Broker](http://kafka.apache.org/07/quickstart.htm
 * `ssl_cert`: SSL CERT
 * `ssl_key`: SSL key
 * `insecure_skip_verify`: Use SSL but skip chain & host verification (default: false)
-* `data_format`: [About Telegraf data formats](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md)
+* `data_format`: [About Telegraf data formats](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md)

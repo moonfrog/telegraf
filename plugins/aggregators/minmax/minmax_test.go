@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/testutil"
 )
 
 var m1, _ = telegraf.NewMetric("m1",

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/influxdata/telegraf/internal"
+	"github.com/moonfrog/telegraf/internal"
 )
 
 type CommandRunner struct{}

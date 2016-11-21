@@ -3,7 +3,7 @@ package buffer
 import (
 	"sync"
 
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 )
 
 // Buffer is an object for storing metrics in a circular buffer.

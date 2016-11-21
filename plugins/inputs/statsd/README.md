@@ -26,7 +26,7 @@
   parse_data_dog_tags = false
 
   ## Statsd data translation templates, more info can be read here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#graphite
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#graphite
   # templates = [
   #     "cpu.* measurement*"
   # ]
@@ -198,4 +198,4 @@ mem.cached.localhost:256|g
 ```
 
 There are many more options available,
-[More details can be found here](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#graphite)
+[More details can be found here](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#graphite)

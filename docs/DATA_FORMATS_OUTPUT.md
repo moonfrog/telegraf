@@ -2,9 +2,9 @@
 
 Telegraf is able to serialize metrics into the following output data formats:
 
-1. [InfluxDB Line Protocol](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md#influx)
-1. [JSON](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md#json)
-1. [Graphite](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md#graphite)
+1. [InfluxDB Line Protocol](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md#influx)
+1. [JSON](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md#json)
+1. [Graphite](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md#graphite)
 
 Telegraf metrics, like InfluxDB
 [points](https://docs.influxdata.com/influxdb/v0.10/write_protocols/line/),
@@ -24,7 +24,7 @@ measurement_name[,tag1=val1,...]  field1=val1[,field2=val2,...]  [timestamp]
 For Telegraf outputs that write textual data (such as `kafka`, `mqtt`, and `file`),
 InfluxDB line protocol was originally the only available output format. But now
 we are normalizing telegraf metric "serializers" into a
-[plugin-like interface](https://github.com/influxdata/telegraf/tree/master/plugins/serializers)
+[plugin-like interface](https://github.com/moonfrog/telegraf/tree/master/plugins/serializers)
 across all output plugins that can support it.
 You will be able to identify a plugin that supports different data formats
 by the presence of a `data_format`
@@ -38,7 +38,7 @@ config option, for example, in the `file` output plugin:
   ## Data format to output.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
   data_format = "influx"
 
   ## Additional configuration options go here
@@ -62,7 +62,7 @@ metrics are serialized directly into InfluxDB line-protocol.
   ## Data format to output.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
   data_format = "influx"
 ```
 
@@ -106,7 +106,7 @@ tars.cpu-total.us-east-1.cpu.usage_idle 98.09 1455320690
   ## Data format to output.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
   data_format = "graphite"
 
   # prefix each graphite bucket
@@ -145,6 +145,6 @@ The JSON data format serialized Telegraf metrics in json format. The format is:
   ## Data format to output.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
   data_format = "json"
 ```

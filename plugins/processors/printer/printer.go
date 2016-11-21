@@ -3,8 +3,8 @@ package printer
 import (
 	"fmt"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/plugins/processors"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/plugins/processors"
 )
 
 type Printer struct {

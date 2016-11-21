@@ -45,7 +45,7 @@ echo "\$CIRCLE_BRANCH: $CIRCLE_BRANCH"
 
 # Move the checked-out source to a better location
 exit_if_fail mv $HOME/telegraf $GOPATH/src/github.com/influxdata
-exit_if_fail cd $GOPATH/src/github.com/influxdata/telegraf
+exit_if_fail cd $GOPATH/src/github.com/moonfrog/telegraf
 
 # Verify that go fmt has been run
 check_go_fmt

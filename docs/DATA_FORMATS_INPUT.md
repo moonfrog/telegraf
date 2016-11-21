@@ -2,11 +2,11 @@
 
 Telegraf is able to parse the following input data formats into metrics:
 
-1. [InfluxDB Line Protocol](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#influx)
-1. [JSON](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#json)
-1. [Graphite](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#graphite)
-1. [Value](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#value), ie: 45 or "booyah"
-1. [Nagios](https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#nagios) (exec input only)
+1. [InfluxDB Line Protocol](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#influx)
+1. [JSON](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#json)
+1. [Graphite](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#graphite)
+1. [Value](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#value), ie: 45 or "booyah"
+1. [Nagios](https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md#nagios) (exec input only)
 
 Telegraf metrics, like InfluxDB
 [points](https://docs.influxdata.com/influxdb/v0.10/write_protocols/line/),
@@ -42,7 +42,7 @@ example, in the exec plugin:
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "json"
 
   ## Additional configuration options go here
@@ -69,7 +69,7 @@ metrics are parsed directly into Telegraf metrics.
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "influx"
 ```
 
@@ -119,7 +119,7 @@ For example, if you had this configuration:
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "json"
 
   ## List of tag names to extract from top-level of JSON server response
@@ -163,7 +163,7 @@ For example, if the following configuration:
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "json"
 
   ## List of tag names to extract from top-level of JSON server response
@@ -234,7 +234,7 @@ name of the plugin.
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "value"
   data_type = "integer" # required
 ```
@@ -392,7 +392,7 @@ There are many more options available,
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "graphite"
 
   ## This string will be used to join the matched values.
@@ -435,6 +435,6 @@ Note: Nagios Input Data Formats is only supported in `exec` input plugin.
   ## Data format to consume.
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "nagios"
 ```

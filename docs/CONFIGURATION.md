@@ -1,7 +1,7 @@
 # Telegraf Configuration
 
 You can see the latest config file with all available plugins here:
-[telegraf.conf](https://github.com/influxdata/telegraf/blob/master/etc/telegraf.conf)
+[telegraf.conf](https://github.com/moonfrog/telegraf/blob/master/etc/telegraf.conf)
 
 ## Generating a Configuration File
 

@@ -1,4 +1,4 @@
-# Telegraf [![Circle CI](https://circleci.com/gh/influxdata/telegraf.svg?style=svg)](https://circleci.com/gh/influxdata/telegraf) [![Docker pulls](https://img.shields.io/docker/pulls/library/telegraf.svg)](https://hub.docker.com/_/telegraf/)
+# Telegraf [![Circle CI](https://circleci.com/gh/moonfrog/telegraf.svg?style=svg)](https://circleci.com/gh/moonfrog/telegraf) [![Docker pulls](https://img.shields.io/docker/pulls/library/telegraf.svg)](https://hub.docker.com/_/telegraf/)
 
 Telegraf is an agent written in Go for collecting, processing, aggregating,
 and writing metrics.
@@ -87,8 +87,8 @@ if you don't have it already. You also must build with golang version 1.5+.
 
 1. [Install Go](https://golang.org/doc/install)
 2. [Setup your GOPATH](https://golang.org/doc/code.html#GOPATH)
-3. Run `go get github.com/influxdata/telegraf`
-4. Run `cd $GOPATH/src/github.com/influxdata/telegraf`
+3. Run `go get github.com/moonfrog/telegraf`
+4. Run `cd $GOPATH/src/github.com/moonfrog/telegraf`
 5. Run `make`
 
 ## How to use it:

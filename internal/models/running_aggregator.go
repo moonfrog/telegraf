@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 )
 
 type RunningAggregator struct {

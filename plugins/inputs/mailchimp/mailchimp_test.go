@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf/testutil"
 
 	"github.com/stretchr/testify/require"
 )

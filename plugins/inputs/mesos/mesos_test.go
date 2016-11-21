@@ -9,7 +9,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf/testutil"
 )
 
 var masterMetrics map[string]interface{}

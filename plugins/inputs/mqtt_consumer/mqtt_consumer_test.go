@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/telegraf/plugins/parsers"
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf/plugins/parsers"
+	"github.com/moonfrog/telegraf/testutil"
 
 	"github.com/stretchr/testify/assert"
 

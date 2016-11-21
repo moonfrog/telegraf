@@ -8,13 +8,13 @@ import (
 
 	"github.com/hpcloud/tail"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/internal/errchan"
-	"github.com/influxdata/telegraf/internal/globpath"
-	"github.com/influxdata/telegraf/plugins/inputs"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/internal/errchan"
+	"github.com/moonfrog/telegraf/internal/globpath"
+	"github.com/moonfrog/telegraf/plugins/inputs"
 
 	// Parsers
-	"github.com/influxdata/telegraf/plugins/inputs/logparser/grok"
+	"github.com/moonfrog/telegraf/plugins/inputs/logparser/grok"
 )
 
 type LogParser interface {

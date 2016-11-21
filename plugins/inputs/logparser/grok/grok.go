@@ -12,7 +12,7 @@ import (
 
 	"github.com/vjeantet/grok"
 
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 )
 
 var timeLayouts = map[string]string{

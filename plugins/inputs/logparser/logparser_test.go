@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/telegraf/testutil"
+	"github.com/moonfrog/telegraf/testutil"
 
-	"github.com/influxdata/telegraf/plugins/inputs/logparser/grok"
+	"github.com/moonfrog/telegraf/plugins/inputs/logparser/grok"
 
 	"github.com/stretchr/testify/assert"
 )

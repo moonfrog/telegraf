@@ -5,7 +5,7 @@ import (
 
 	"github.com/shirou/gopsutil/process"
 
-	"github.com/influxdata/telegraf"
+	"github.com/moonfrog/telegraf"
 )
 
 type SpecProcessor struct {

@@ -8,11 +8,11 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/internal"
-	"github.com/influxdata/telegraf/plugins/outputs"
-	"github.com/influxdata/telegraf/plugins/serializers"
-	"github.com/influxdata/telegraf/plugins/serializers/graphite"
+	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/internal"
+	"github.com/moonfrog/telegraf/plugins/outputs"
+	"github.com/moonfrog/telegraf/plugins/serializers"
+	"github.com/moonfrog/telegraf/plugins/serializers/graphite"
 )
 
 type Instrumental struct {
@@ -45,7 +45,7 @@ var sampleConfig = `
   ## Prefix the metrics with a given name
   prefix = ""
   ## Stats output template (Graphite formatting)
-  ## see https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md#graphite
+  ## see https://github.com/moonfrog/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md#graphite
   template = "host.tags.measurement.field"
   ## Timeout in seconds to connect
   timeout = "2s"
