@@ -19,4 +19,5 @@ import (
 	_ "github.com/moonfrog/telegraf/plugins/outputs/opentsdb"
 	_ "github.com/moonfrog/telegraf/plugins/outputs/prometheus_client"
 	_ "github.com/moonfrog/telegraf/plugins/outputs/riemann"
+	_ "github.com/moonfrog/telegraf/plugins/outputs/statsdog"
 )

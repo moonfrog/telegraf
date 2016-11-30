@@ -81,15 +81,29 @@ func (m *memsql) gatherServer(addr string, acc telegraf.Accumulator) error {
 		log.Fatal(err)
 	}
 
+	var value float64
 	results := make([]interface{}, 0)
 	results = m.runQuery(db, queryLines)
 
 	for i := range results {
-		res := results[i]
-		fmt.Println("hello")
-		fmt.Printf("+%v", res)
-		fmt.Println("end")
+		fields := make(map[string]interface{})
+		tags := make(map[string]string)
+		table := make(map[string]string)
 
+		res := results[i]
+		for k, val := range res.(map[string]interface{}) {
+			if len(k) >= 3 && k[0:3] == "val" {
+				value, err = strconv.ParseFloat(val.(string), 64)
+				fields[k] = value
+			} else if k == "metric" {
+				table[k] = val.(string)
+			} else if k == "mode" {
+				tags[k] = val.(string)
+			} else {
+				tags[k] = val.(string)
+			}
+		}
+		acc.AddFields(table["metric"], fields, tags)
 	}
 
 	return nil
@@ -184,6 +198,7 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 				for i := 0; i < len(vals); i++ {
 					row[cols[i]] = m.returnValue(vals[i].(*interface{}))
 				}
+
 				results = append(results, row)
 
 			}
