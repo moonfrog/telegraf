@@ -30,7 +30,6 @@ import (
 	_ "github.com/moonfrog/telegraf/plugins/inputs/ipmi_sensor"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/iptables"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/jolokia"
-	_ "github.com/moonfrog/telegraf/plugins/inputs/kafka_consumer"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/kubernetes"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/leofs"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/logparser"
