@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/moonfrog/telegraf"
+	"github.com/moonfrog/telegraf/internal/caching"
 	"github.com/moonfrog/telegraf/plugins/inputs"
 	"log"
 	"os"
@@ -24,6 +25,9 @@ type memsql struct {
 	Files      string
 	Interval   int
 	tableMap   map[string]string
+	cache      *caching.Caching
+	Lag        int
+	Batch      int
 }
 
 var sampleConfig = ``
@@ -153,8 +157,19 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 	var endTime string
 	results := make([]interface{}, 0)
 
-	startTime = strconv.FormatInt(time.Now().Add(-120*time.Second).Unix(), 10)
-	endTime = strconv.FormatInt(time.Now().Add(-60*time.Second).Unix(), 10)
+	//get & set start/end time via cache
+	tm, found := m.cache.GetKey("startTime")
+	if found {
+		startTime = tm
+	} else {
+		startTime = strconv.FormatInt(time.Now().Add(-time.Duration(m.Batch+m.Lag)*time.Second).Unix(), 10)
+	}
+
+	endTime = strconv.FormatInt(time.Now().Add(-time.Duration(m.Lag)*time.Second).Unix(), 10)
+	m.cache.SetWithNoExpiration("startTime", endTime)
+
+	//startTime = strconv.FormatInt(time.Now().Add(-120*time.Second).Unix(), 10)
+	//endTime = strconv.FormatInt(time.Now().Add(-60*time.Second).Unix(), 10)
 
 	// run queries to get metrics data
 	for i, query := range queryLines {
@@ -165,7 +180,7 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 			var rows *sql.Rows
 			start := time.Now()
 			toExec := fmt.Sprintf(query, startTime, endTime)
-			fmt.Println(toExec)
+
 			rows, err := client.Query(toExec)
 			fmt.Println(time.Now().Sub(start))
 
@@ -215,6 +230,7 @@ func init() {
 	inputs.Add("memsql", func() telegraf.Input {
 		return &memsql{
 			tableMap: make(map[string]string),
+			cache:    caching.Newcache(),
 		}
 	})
 }

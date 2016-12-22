@@ -47,7 +47,6 @@ func (d *Statsdog) Connect() error {
 
 	d.client, err = statsd.New("172.31.22.127:8125")
 	if err != nil {
-		fmt.Println("hello")
 		log.Fatal(err)
 	}
 
@@ -59,29 +58,9 @@ func (d *Statsdog) Write(metrics []telegraf.Metric) error {
 		return nil
 	}
 
-	// send the EC2 availability zone as a tag with every metric
-	d.client.Tags = append(d.client.Tags, "region:us-east-1a")
-	err := d.client.Gauge("request.duration", 1.2, nil, 1)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	/*for _, m := range metrics {
-		if dogMs, err := buildMetrics(m); err == nil {
-			fmt.Printf("hello -- +%v", dogMs)
-		}
-	}*/
-
-	/*tags := make([]string, 1)
-	tags["meter"] = "test"
-
-	err := d.client.Gauge("opt", 1, tags, 1)
-	if err != nil {
-		fmt.Println(err)
-	}*/
+	fmt.Printf("+%v", metrics)
 
 	metric := &Metric{}
-	//err = c.Gauge("request.duration", 1.2, nil, 1)
 	/*ts := TimeSeries{}
 
 	metricCounter := 0*/
@@ -94,9 +73,6 @@ func (d *Statsdog) Write(metrics []telegraf.Metric) error {
 				if fieldName == "value" {
 					// adding .value seems redundant here
 					dname = m.Name()
-				} else if fieldName == "mode" {
-					mode := dogM
-					fmt.Printf("+%v", mode)
 				} else {
 					dname = m.Name() + "." + fieldName
 				}

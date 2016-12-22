@@ -17,6 +17,7 @@ import (
 type Datadog struct {
 	Apikey  string
 	Timeout internal.Duration
+	Prefix  string
 
 	apiUrl string
 	client *http.Client
@@ -38,6 +39,7 @@ type Metric struct {
 	Metric string   `json:"metric"`
 	Points [1]Point `json:"points"`
 	Host   string   `json:"host"`
+	Type   string   `json:"type"`
 	Tags   []string `json:"tags,omitempty"`
 }
 
@@ -81,11 +83,15 @@ func (d *Datadog) Write(metrics []telegraf.Metric) error {
 					dname = m.Name() + "." + fieldName
 				}
 				var host string
+				var mode string
 				host, _ = m.Tags()["host"]
+				mode, _ = m.Tags()["mode"]
+
 				metric := &Metric{
 					Metric: dname,
 					Tags:   buildTags(m.Tags()),
 					Host:   host,
+					Type:   mode,
 				}
 				metric.Points[0] = dogM
 				tempSeries = append(tempSeries, metric)
