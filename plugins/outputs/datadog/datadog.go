@@ -85,7 +85,7 @@ func (d *Datadog) Write(metrics []telegraf.Metric) error {
 				var host string
 				var mode string
 				host, _ = m.Tags()["host"]
-				mode, _ = m.Tags()["mode"]
+				mode, _ = m.Tags()["modes"]
 
 				metric := &Metric{
 					Metric: dname,

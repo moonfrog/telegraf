@@ -26,8 +26,8 @@ type memsql struct {
 	Interval   int
 	tableMap   map[string]string
 	cache      *caching.Caching
-	Lag        int
-	Batch      int
+	Lag        int64
+	Batch      int64
 }
 
 var sampleConfig = ``
@@ -99,15 +99,15 @@ func (m *memsql) gatherServer(addr string, acc telegraf.Accumulator) error {
 			if len(k) >= 3 && k[0:3] == "val" {
 				value, err = strconv.ParseFloat(val.(string), 64)
 				fields[k] = value
-			} else if k == "metric" {
+			} else if k == "metrics" {
 				table[k] = val.(string)
-			} else if k == "mode" {
+			} else if k == "modes" {
 				tags[k] = val.(string)
 			} else {
 				tags[k] = val.(string)
 			}
 		}
-		acc.AddFields(table["metric"], fields, tags)
+		acc.AddFields(table["metrics"], fields, tags)
 	}
 
 	return nil
@@ -162,10 +162,13 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 	if found {
 		startTime = tm
 	} else {
-		startTime = strconv.FormatInt(time.Now().Add(-time.Duration(m.Batch+m.Lag)*time.Second).Unix(), 10)
+		startTime = fmt.Sprintf("%v", time.Now().Unix()-(m.Batch+m.Lag))
+		//startTime = strconv.FormatInt(time.Now().Add(-time.Duration(m.Batch+m.Lag)*time.Second).Unix(), 10)
 	}
 
-	endTime = strconv.FormatInt(time.Now().Add(-time.Duration(m.Lag)*time.Second).Unix(), 10)
+	endTime = fmt.Sprintf("%v", time.Now().Unix()-(m.Lag))
+
+	//endTime = strconv.FormatInt(time.Now().Add(-time.Duration(m.Lag)*time.Second).Unix(), 10)
 	m.cache.SetWithNoExpiration("startTime", endTime)
 
 	//startTime = strconv.FormatInt(time.Now().Add(-120*time.Second).Unix(), 10)
@@ -180,6 +183,7 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 			var rows *sql.Rows
 			start := time.Now()
 			toExec := fmt.Sprintf(query, startTime, endTime)
+			fmt.Printf("%+v", toExec)
 
 			rows, err := client.Query(toExec)
 			fmt.Println(time.Now().Sub(start))

@@ -1,1 +1,2 @@
-select phylum as notif_type, count(*) as value,'optron.pn_send' as metric, 'counter' as mode  from m_table_count_push_notif_send where kingdom='success' and timestamp between %s and %s group by phylum
+select phylum as notif_type, count(*) as value,'pn_interacts' as metrics, 'counter' as modes  from m_table_count_push_notif_interact where timestamp between %s and %s group by phylum
+select phylum as notif_type, count(*) as value,'pn_sends' as metrics, 'counter' as modes  from m_table_count_push_notif_send where kingdom='success' and timestamp between %s and %s group by phylum
