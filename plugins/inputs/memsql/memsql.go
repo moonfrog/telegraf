@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"sync"
 	"time"
+	"github.com/moonfrog/badger/logs"
 )
 
 type memsql struct {
@@ -183,10 +184,8 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 			var rows *sql.Rows
 			start := time.Now()
 			toExec := fmt.Sprintf(query, startTime, endTime)
-			fmt.Printf("%+v", toExec)
-
 			rows, err := client.Query(toExec)
-			fmt.Println(time.Now().Sub(start))
+			logs.Info(fmt.Sprintf("[%v] : %v", time.Now().Sub(start), toExec))
 
 			if err != nil {
 				log.Fatal("Error Query Line ", err, query, i)

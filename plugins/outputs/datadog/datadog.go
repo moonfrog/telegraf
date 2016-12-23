@@ -4,14 +4,16 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
+	"github.com/moonfrog/badger/logs"
 	"net/http"
 	"net/url"
 	"sort"
+	"log"
 
 	"github.com/moonfrog/telegraf"
 	"github.com/moonfrog/telegraf/internal"
 	"github.com/moonfrog/telegraf/plugins/outputs"
+	"strings"
 )
 
 type Datadog struct {
@@ -43,7 +45,25 @@ type Metric struct {
 	Tags   []string `json:"tags,omitempty"`
 }
 
+func (this *Metric) Lines() []string{
+	lines := make([]string, 0)
+	if this.Tags == nil{
+		return lines
+	}
+	for _, t := range this.Tags{
+		if !strings.HasPrefix(t, "host:") && !strings.HasPrefix(t, "modes"){
+			l := fmt.Sprintf("%v, %v, %v=[%+v]", this.Metric, this.Type, t, this.Points[0].String())
+			lines = append(lines, l)
+		}
+	}
+	return lines
+}
+
 type Point [2]float64
+
+func (this *Point) String() string{
+	return fmt.Sprintf("%.2f, %v", this[0], this[1] )
+}
 
 const datadog_api = "https://app.datadoghq.com/api/v1/series"
 
@@ -104,6 +124,7 @@ func (d *Datadog) Write(metrics []telegraf.Metric) error {
 
 	ts.Series = make([]*Metric, metricCounter)
 	copy(ts.Series, tempSeries[0:])
+	printMetrics(ts.Series)
 	tsBytes, err := json.Marshal(ts)
 	if err != nil {
 		return fmt.Errorf("unable to marshal TimeSeries, %s\n", err.Error())
@@ -125,6 +146,23 @@ func (d *Datadog) Write(metrics []telegraf.Metric) error {
 	}
 
 	return nil
+}
+
+func printMetrics(metrics []*Metric){
+	if metrics == nil{
+		logs.Info("metric-array-nil")
+		return
+	}
+	lines := make([]string, 0)
+	for _, m := range metrics{
+		if m!=nil{
+			lines = append(lines, m.Lines()...)
+		}
+	}
+
+	for _, l := range lines{
+		logs.Info("Metric : %v", l)
+	}
 }
 
 func (d *Datadog) SampleConfig() string {
@@ -200,6 +238,7 @@ func (d *Datadog) Close() error {
 }
 
 func init() {
+	logs.SetLogFile("telegraf_1")
 	outputs.Add("datadog", func() telegraf.Output {
 		return NewDatadog(datadog_api)
 	})

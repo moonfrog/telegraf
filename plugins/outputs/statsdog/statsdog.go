@@ -12,6 +12,8 @@ import (
 	"github.com/moonfrog/telegraf"
 	"github.com/moonfrog/telegraf/internal"
 	"github.com/moonfrog/telegraf/plugins/outputs"
+	"github.com/moonfrog/badger/logs"
+	"strings"
 )
 
 type Statsdog struct {
@@ -33,11 +35,29 @@ type Metric struct {
 	Metric string   `json:"metric"`
 	Points [1]Point `json:"points"`
 	Host   string   `json:"host"`
+	Type   string   `json:"type"`
 	Tags   []string `json:"tags,omitempty"`
+}
+
+func (this *Metric) Lines() []string{
+	lines := make([]string, 0)
+	if this.Tags == nil{
+		return lines
+	}
+	for _, t := range this.Tags{
+		if !strings.HasPrefix(t, "host:") && !strings.HasPrefix(t, "modes"){
+			l := fmt.Sprintf("%v, %v, %v=[%+v]", this.Metric, this.Type, t, this.Points[0].String())
+			lines = append(lines, l)
+		}
+	}
+	return lines
 }
 
 type Point [2]float64
 
+func (this *Point) String() string{
+	return fmt.Sprintf("%.2f, %v", this[0], this[1] )
+}
 func NewStatsdog() *Statsdog {
 	return &Statsdog{}
 }
@@ -54,16 +74,15 @@ func (d *Statsdog) Connect() error {
 }
 
 func (d *Statsdog) Write(metrics []telegraf.Metric) error {
+	//fmt.Printf("+%v", metrics)
+	//return nil
+
 	if len(metrics) == 0 {
 		return nil
 	}
-
-	fmt.Printf("+%v", metrics)
-
-	metric := &Metric{}
-	/*ts := TimeSeries{}
-
-	metricCounter := 0*/
+	ts := TimeSeries{}
+	tempSeries := []*Metric{}
+	metricCounter := 0
 
 	for _, m := range metrics {
 		if dogMs, err := buildMetrics(m); err == nil {
@@ -77,46 +96,60 @@ func (d *Statsdog) Write(metrics []telegraf.Metric) error {
 					dname = m.Name() + "." + fieldName
 				}
 				var host string
+				var mode string
 				host, _ = m.Tags()["host"]
-				metric = &Metric{
+				mode, _ = m.Tags()["modes"]
+
+				metric := &Metric{
 					Metric: dname,
 					Tags:   buildTags(m.Tags()),
 					Host:   host,
+					Type:   mode,
 				}
 				metric.Points[0] = dogM
-
-				//tempSeries = append(tempSeries, metric)
-				//metricCounter++
+				tempSeries = append(tempSeries, metric)
+				metricCounter++
 			}
 		} else {
 			log.Printf("I! unable to build Metric for %s, skipping\n", m.Name())
 		}
 	}
 
-	/*
-		ts.Series = make([]*Metric, metricCounter)
-		copy(ts.Series, tempSeries[0:])
-		tsBytes, err := json.Marshal(ts)
-		if err != nil {
-			return fmt.Errorf("unable to marshal TimeSeries, %s\n", err.Error())
-		}
-		req, err := http.NewRequest("POST", d.authenticatedUrl(), bytes.NewBuffer(tsBytes))
-		if err != nil {
-			return fmt.Errorf("unable to create http.Request, %s\n", err.Error())
-		}
-		req.Header.Add("Content-Type", "application/json")
+	ts.Series = make([]*Metric, metricCounter)
+	copy(ts.Series, tempSeries[0:])
 
-		resp, err := d.client.Do(req)
-		if err != nil {
-			return fmt.Errorf("error POSTing metrics, %s\n", err.Error())
-		}
-		defer resp.Body.Close()
+	printMetrics(ts.Series)
 
-		if resp.StatusCode < 200 || resp.StatusCode > 209 {
-			return fmt.Errorf("received bad status code, %d\n", resp.StatusCode)
-		}*/
+	for _, m := range ts.Series{
+		switch m.Type {
+		case "count":
+			value := int64(m.Points[0][1])
+			d.client.Count(m.Metric,value,m.Tags,1)
+			fmt.Println("SEND")
+		case "gauge":
+			value := m.Points[0][1]
+			d.client.Gauge(m.Metric,value, m.Tags, 1)
+		}
+	}
 
 	return nil
+}
+
+func printMetrics(metrics []*Metric){
+	if metrics == nil{
+		logs.Info("metric-array-nil")
+		return
+	}
+	lines := make([]string, 0)
+	for _, m := range metrics{
+		if m!=nil{
+			lines = append(lines, m.Lines()...)
+		}
+	}
+
+	for _, l := range lines{
+		logs.Info("Metric : %v", l)
+	}
 }
 
 func (d *Statsdog) SampleConfig() string {

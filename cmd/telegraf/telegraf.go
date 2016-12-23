@@ -20,6 +20,7 @@ import (
 	"github.com/moonfrog/telegraf/plugins/outputs"
 	_ "github.com/moonfrog/telegraf/plugins/outputs/all"
 	_ "github.com/moonfrog/telegraf/plugins/processors/all"
+	"github.com/moonfrog/badger/logs"
 )
 
 var fDebug = flag.Bool("debug", false,
@@ -305,6 +306,7 @@ func (p *program) Stop(s service.Service) error {
 }
 
 func main() {
+	logs.SetLogFile("telegraf_1")
 	flag.Usage = func() { usageExit(0) }
 	flag.Parse()
 	if runtime.GOOS == "windows" {
