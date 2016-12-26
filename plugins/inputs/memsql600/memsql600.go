@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/moonfrog/badger/logs"
 	"github.com/moonfrog/telegraf"
 	"github.com/moonfrog/telegraf/internal/caching"
 	"github.com/moonfrog/telegraf/plugins/inputs"
@@ -76,6 +77,7 @@ func (m *memsql600) gatherServer(addr string, acc telegraf.Accumulator) error {
 	dsn := fmt.Sprintf("%s:%s@%s/%s?timeout=30s&strict=true&allowAllFiles=true", m.DbUser, m.DbPassword, netAddr, m.DbName)
 
 	db, err := sql.Open("mysql", dsn)
+	defer db.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -183,10 +185,8 @@ func (m *memsql600) runQuery(client *sql.DB, queryLines []string) []interface{} 
 			var rows *sql.Rows
 			start := time.Now()
 			toExec := fmt.Sprintf(query, startTime, endTime)
-			fmt.Printf("%+v", toExec)
-
 			rows, err := client.Query(toExec)
-			fmt.Println(time.Now().Sub(start))
+			logs.Info(fmt.Sprintf("[%v] : %v", time.Now().Sub(start), toExec))
 
 			if err != nil {
 				log.Fatal("Error Query Line ", err, query, i)
