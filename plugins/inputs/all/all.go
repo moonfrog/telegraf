@@ -37,6 +37,7 @@ import (
 	_ "github.com/moonfrog/telegraf/plugins/inputs/mailchimp"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/memcached"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/memsql"
+	_ "github.com/moonfrog/telegraf/plugins/inputs/memsql600"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/mesos"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/mongodb"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/mqtt_consumer"
