@@ -125,7 +125,6 @@ func (d *Statsdog) Write(metrics []telegraf.Metric) error {
 		case "count":
 			value := int64(m.Points[0][1])
 			d.client.Count(m.Metric,value,m.Tags,1)
-			fmt.Println("SEND")
 		case "gauge":
 			value := m.Points[0][1]
 			d.client.Gauge(m.Metric,value, m.Tags, 1)
@@ -163,7 +162,6 @@ func (d *Statsdog) Description() string {
 func buildMetrics(m telegraf.Metric) (map[string]Point, error) {
 	ms := make(map[string]Point)
 	for k, v := range m.Fields() {
-		fmt.Print(k)
 		if !verifyValue(v) {
 			continue
 		}
