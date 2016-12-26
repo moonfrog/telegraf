@@ -15,7 +15,6 @@ import (
 	_ "github.com/moonfrog/telegraf/plugins/inputs/couchdb"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/disque"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/dns_query"
-	_ "github.com/moonfrog/telegraf/plugins/inputs/docker"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/dovecot"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/elasticsearch"
 	_ "github.com/moonfrog/telegraf/plugins/inputs/exec"
