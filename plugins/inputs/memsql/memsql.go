@@ -77,6 +77,7 @@ func (m *memsql) gatherServer(addr string, acc telegraf.Accumulator) error {
 	dsn := fmt.Sprintf("%s:%s@%s/%s?timeout=30s&strict=true&allowAllFiles=true", m.DbUser, m.DbPassword, netAddr, m.DbName)
 
 	db, err := sql.Open("mysql", dsn)
+	defer db.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
