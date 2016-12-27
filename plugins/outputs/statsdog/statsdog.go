@@ -39,14 +39,14 @@ type Metric struct {
 	Tags   []string `json:"tags,omitempty"`
 }
 
-func (this *Metric) Lines() []string{
+func (this *Metric) Lines(x int) []string{
 	lines := make([]string, 0)
 	if this.Tags == nil{
 		return lines
 	}
 	for _, t := range this.Tags{
 		if !strings.HasPrefix(t, "host:") && !strings.HasPrefix(t, "modes"){
-			l := fmt.Sprintf("%v, %v, %v=[%+v]", this.Metric, this.Type, t, this.Points[0].String())
+			l := fmt.Sprintf("%v : %v, %v, %v=[%+v]", x, this.Metric, this.Type, t, this.Points[0].String())
 			lines = append(lines, l)
 		}
 	}
@@ -124,10 +124,14 @@ func (d *Statsdog) Write(metrics []telegraf.Metric) error {
 		switch m.Type {
 		case "count":
 			value := int64(m.Points[0][1])
-			d.client.Count(m.Metric,value,m.Tags,1)
+			if err := d.client.Count(m.Metric,value,m.Tags,1); err!=nil{
+				logs.Error(err.Error())
+			}
 		case "gauge":
 			value := m.Points[0][1]
-			d.client.Gauge(m.Metric,value, m.Tags, 1)
+			if err := d.client.Gauge(m.Metric,value, m.Tags, 1); err!=nil{
+				logs.Error(err.Error())
+			}
 		}
 	}
 
@@ -140,9 +144,9 @@ func printMetrics(metrics []*Metric){
 		return
 	}
 	lines := make([]string, 0)
-	for _, m := range metrics{
+	for x, m := range metrics{
 		if m!=nil{
-			lines = append(lines, m.Lines()...)
+			lines = append(lines, m.Lines(x)...)
 		}
 	}
 

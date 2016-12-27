@@ -70,7 +70,7 @@ func (m *memsql) gatherServer(addr string, acc telegraf.Accumulator) error {
 
 	queryLines, err := m.readLines(m.Files)
 	if err != nil {
-		log.Fatal(" Unable to read from file %s, Error %v", m.Files, err)
+		log.Fatal("Unable to read from file %s, Error %v", m.Files, err)
 	}
 
 	netAddr := fmt.Sprintf("%s(%s:%s)", m.Prot, addr, m.Dbport)
@@ -194,11 +194,11 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 			defer rows.Close()
 			cols, err := rows.Columns()
 			if err != nil {
-				log.Printf("No columns returned %v", err)
+				log.Printf("E! No columns returned %v", err)
 				return
 			}
 			if cols == nil {
-				log.Printf("No columns returned")
+				log.Printf("E! No columns returned")
 				return
 			}
 
@@ -222,7 +222,7 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 
 			}
 			if rows.Err() != nil {
-				log.Printf("Error sanning rows %v", err)
+				log.Printf("E! Error sanning rows %v", err)
 			}
 		}(i, query)
 	}
