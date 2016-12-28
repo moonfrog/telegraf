@@ -1,19 +1,16 @@
 package statsdog
 
 import (
-	//"bytes"
-	//"encoding/json"
 	"fmt"
-	"log"
-	//"net/url"
-	"sort"
-
 	"github.com/DataDog/datadog-go/statsd"
+	"github.com/moonfrog/go-logs/logs"
 	"github.com/moonfrog/telegraf"
 	"github.com/moonfrog/telegraf/internal"
 	"github.com/moonfrog/telegraf/plugins/outputs"
-	"github.com/moonfrog/badger/logs"
+	"sort"
 	"strings"
+	"sync"
+	"time"
 )
 
 type Statsdog struct {
@@ -39,13 +36,22 @@ type Metric struct {
 	Tags   []string `json:"tags,omitempty"`
 }
 
-func (this *Metric) Lines(x int) []string{
+func (this *Metric) Line() string {
+	tags := ""
+	if this.Tags != nil {
+		tags = strings.Join(this.Tags, " # ")
+	}
+	line := fmt.Sprintf("%v | (%v) | %v | (%v) | %v,", this.Metric, this.Points[0].String(), this.Type, tags, this.Host)
+	return line
+}
+
+func (this *Metric) Lines(x int) []string {
 	lines := make([]string, 0)
-	if this.Tags == nil{
+	if this.Tags == nil {
 		return lines
 	}
-	for _, t := range this.Tags{
-		if !strings.HasPrefix(t, "host:") && !strings.HasPrefix(t, "modes"){
+	for _, t := range this.Tags {
+		if !strings.HasPrefix(t, "host:") && !strings.HasPrefix(t, "modes") {
 			l := fmt.Sprintf("%v : %v, %v, %v=[%+v]", x, this.Metric, this.Type, t, this.Points[0].String())
 			lines = append(lines, l)
 		}
@@ -55,9 +61,11 @@ func (this *Metric) Lines(x int) []string{
 
 type Point [2]float64
 
-func (this *Point) String() string{
-	return fmt.Sprintf("%.2f, %v", this[0], this[1] )
+func (this *Point) String() string {
+	x := time.Unix(int64(this[0]), 0).Format("15:04:05")
+	return fmt.Sprintf("%v,%v", x, this[1])
 }
+
 func NewStatsdog() *Statsdog {
 	return &Statsdog{}
 }
@@ -66,8 +74,10 @@ func (d *Statsdog) Connect() error {
 	var err error
 
 	d.client, err = statsd.New("172.31.22.127:8125")
+	//d.client, err = statsd.New("127.0.0.1:9999")
+	//d.client, err = statsd.NewBuffered("172.31.22.127:8125", 10)
 	if err != nil {
-		log.Fatal(err)
+		logs.Fatalf(err.Error())
 	}
 
 	return nil
@@ -111,47 +121,69 @@ func (d *Statsdog) Write(metrics []telegraf.Metric) error {
 				metricCounter++
 			}
 		} else {
-			log.Printf("I! unable to build Metric for %s, skipping\n", m.Name())
+			logs.Infof("unable to build Metric for %s, skipping", m.Name())
 		}
 	}
 
 	ts.Series = make([]*Metric, metricCounter)
 	copy(ts.Series, tempSeries[0:])
 
-	printMetrics(ts.Series)
-
-	for _, m := range ts.Series{
-		switch m.Type {
-		case "count":
-			value := int64(m.Points[0][1])
-			if err := d.client.Count(m.Metric,value,m.Tags,1); err!=nil{
-				logs.Error(err.Error())
-			}
-		case "gauge":
-			value := m.Points[0][1]
-			if err := d.client.Gauge(m.Metric,value, m.Tags, 1); err!=nil{
-				logs.Error(err.Error())
-			}
-		}
-	}
+	stime := time.Now().Unix()
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go d.sendWithSleep(ts.Series, &wg)
+	wg.Wait()
+	logs.Infof("to-dog : time taken : %v", time.Now().Unix()-stime)
 
 	return nil
 }
 
-func printMetrics(metrics []*Metric){
-	if metrics == nil{
-		logs.Info("metric-array-nil")
+func (d *Statsdog) sendWithSleep(metrics []*Metric, wg *sync.WaitGroup) {
+
+	//printMetrics(ts.Series)
+	//fmt.Printf("writing ======= \n")
+
+	for i, m := range metrics {
+		switch m.Type {
+		case "count":
+			value := int64(m.Points[0][1])
+			if err := d.client.Count(m.Metric, value, m.Tags, 1); err != nil {
+				logs.Errorf(err.Error())
+			} else {
+				logs.Infof("to-dog : %v ", m.Line())
+			}
+		case "gauge":
+			value := m.Points[0][1]
+			if err := d.client.Gauge(m.Metric, value, m.Tags, 1); err != nil {
+				logs.Errorf(err.Error())
+			} else {
+				logs.Infof("to-dog : %v ", m.Line())
+			}
+		default:
+			logs.Errorf("invalid metric-type(%v), metric(%+v)", m.Type, m.Line())
+		}
+		if i%30 == 0 {
+			logs.Infof("to-dog : sleeping")
+			time.Sleep(10 * time.Millisecond)
+		}
+	}
+	wg.Done()
+}
+
+func printMetrics(metrics []*Metric) {
+	if metrics == nil {
+		logs.Infof("metric-array-nil")
 		return
 	}
 	lines := make([]string, 0)
-	for x, m := range metrics{
-		if m!=nil{
+	for x, m := range metrics {
+		if m != nil {
 			lines = append(lines, m.Lines(x)...)
 		}
 	}
 
-	for _, l := range lines{
-		logs.Info("Metric : %v", l)
+	for _, l := range lines {
+		logs.Infof("Metric : %v", l)
 	}
 }
 

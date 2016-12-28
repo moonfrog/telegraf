@@ -11,6 +11,7 @@ import (
 	"syscall"
 
 	"github.com/kardianos/service"
+	"github.com/moonfrog/go-logs/logs"
 	"github.com/moonfrog/telegraf/agent"
 	"github.com/moonfrog/telegraf/internal/config"
 	"github.com/moonfrog/telegraf/logger"
@@ -20,7 +21,6 @@ import (
 	"github.com/moonfrog/telegraf/plugins/outputs"
 	_ "github.com/moonfrog/telegraf/plugins/outputs/all"
 	_ "github.com/moonfrog/telegraf/plugins/processors/all"
-	"github.com/moonfrog/go-logs/logs"
 )
 
 var fDebug = flag.Bool("debug", false,
@@ -306,6 +306,7 @@ func (p *program) Stop(s service.Service) error {
 }
 
 func main() {
+	Init()
 	flag.Usage = func() { usageExit(0) }
 	flag.Parse()
 	if runtime.GOOS == "windows" {
@@ -344,6 +345,6 @@ func main() {
 	}
 }
 
-func Init(){
+func Init() {
 	logs.Init("telegraf", "/var/moonfrog/telegraf/logs")
 }

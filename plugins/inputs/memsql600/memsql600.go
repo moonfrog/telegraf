@@ -181,7 +181,7 @@ func (m *memsql600) runQueries(client *sql.DB, queryLines []string) []interface{
 
 			logs.Infof(fmt.Sprintf(" Query : [%v] : %v", time.Now().Sub(start), toExec))
 			if err != nil {
-				logs.Fatalf("Error Query Line ", err, query, i)
+				logs.Fatalf("Error Query Line %v ", err)
 			}
 
 			cols, err := rows.Columns()
