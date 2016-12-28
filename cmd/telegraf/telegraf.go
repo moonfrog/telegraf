@@ -20,7 +20,7 @@ import (
 	"github.com/moonfrog/telegraf/plugins/outputs"
 	_ "github.com/moonfrog/telegraf/plugins/outputs/all"
 	_ "github.com/moonfrog/telegraf/plugins/processors/all"
-	"github.com/moonfrog/badger/logs"
+	"github.com/moonfrog/go-logs/logs"
 )
 
 var fDebug = flag.Bool("debug", false,
@@ -306,7 +306,6 @@ func (p *program) Stop(s service.Service) error {
 }
 
 func main() {
-	logs.SetLogFile("telegraf_1")
 	flag.Usage = func() { usageExit(0) }
 	flag.Parse()
 	if runtime.GOOS == "windows" {
@@ -343,4 +342,8 @@ func main() {
 		stop = make(chan struct{})
 		reloadLoop(stop, nil)
 	}
+}
+
+func Init(){
+	logs.Init("telegraf", "/var/moonfrog/telegraf/logs")
 }

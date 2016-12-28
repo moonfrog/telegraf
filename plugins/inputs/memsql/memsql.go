@@ -5,24 +5,23 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/moonfrog/go-logs/logs"
 	"github.com/moonfrog/telegraf"
 	"github.com/moonfrog/telegraf/internal/caching"
 	"github.com/moonfrog/telegraf/plugins/inputs"
-	"log"
 	"os"
 	"strconv"
 	"sync"
 	"time"
-	"github.com/moonfrog/badger/logs"
 )
 
 type memsql struct {
-	DbUser     string   // Memsql username
-	DbPassword string   // Memsql password
-	DbHost     []string // Memsql host
-	Dbport     string   // Memsql port
-	DbName     string   // Memsql database name
-	Prot       string   // Memsql connection protocol
+	DbUser     string   // memsql username
+	DbPassword string   // memsql password
+	DbHost     []string // memsql host
+	Dbport     string   // memsql port
+	DbName     string   // memsql database name
+	Prot       string   // memsql connection protocol
 	Files      string
 	Interval   int
 	tableMap   map[string]string
@@ -70,7 +69,7 @@ func (m *memsql) gatherServer(addr string, acc telegraf.Accumulator) error {
 
 	queryLines, err := m.readLines(m.Files)
 	if err != nil {
-		log.Fatal("Unable to read from file %s, Error %v", m.Files, err)
+		logs.Fatalf(" Unable to read from file %s, Error %v", m.Files, err)
 	}
 
 	netAddr := fmt.Sprintf("%s(%s:%s)", m.Prot, addr, m.Dbport)
@@ -79,17 +78,12 @@ func (m *memsql) gatherServer(addr string, acc telegraf.Accumulator) error {
 	db, err := sql.Open("mysql", dsn)
 	defer db.Close()
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = db.Ping()
-	if err != nil {
-		log.Fatal(err)
+		logs.Fatalf(err)
 	}
 
 	var value float64
 	results := make([]interface{}, 0)
-	results = m.runQuery(db, queryLines)
+	results = m.runQueries(db, queryLines)
 
 	for i := range results {
 		fields := make(map[string]interface{})
@@ -152,53 +146,47 @@ func (m *memsql) returnValue(pval *interface{}) interface{} {
 	}
 }
 
-func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
+func (m *memsql) runQueries(client *sql.DB, queryLines []string) []interface{} {
 
 	var wg sync.WaitGroup
-	var startTime string
-	var endTime string
-	results := make([]interface{}, 0)
 
 	//get & set start/end time via cache
+	var startTime string
+	var endTime string
+	timeNow := time.Now().Unix()
 	tm, found := m.cache.GetKey("startTime")
 	if found {
 		startTime = tm
 	} else {
-		startTime = fmt.Sprintf("%v", time.Now().Unix()-(m.Batch+m.Lag))
-		//startTime = strconv.FormatInt(time.Now().Add(-time.Duration(m.Batch+m.Lag)*time.Second).Unix(), 10)
+		startTime = fmt.Sprintf("%v", timeNow-(m.Batch+m.Lag))
 	}
-
-	endTime = fmt.Sprintf("%v", time.Now().Unix()-(m.Lag))
-
-	//endTime = strconv.FormatInt(time.Now().Add(-time.Duration(m.Lag)*time.Second).Unix(), 10)
+	endTime = fmt.Sprintf("%v", timeNow-m.Lag)
 	m.cache.SetWithNoExpiration("startTime", endTime)
 
-	//startTime = strconv.FormatInt(time.Now().Add(-120*time.Second).Unix(), 10)
-	//endTime = strconv.FormatInt(time.Now().Add(-60*time.Second).Unix(), 10)
+	allResults := make([]*[]interface{}, len(queryLines))
 
 	// run queries to get metrics data
 	for i, query := range queryLines {
 		wg.Add(1)
 		go func(i int, query string) {
+			results := make([]interface{}, 0)
+
 			defer wg.Done()
 
 			var rows *sql.Rows
 			start := time.Now()
 			toExec := fmt.Sprintf(query, startTime, endTime)
 			rows, err := client.Query(toExec)
-			logs.Info(fmt.Sprintf("[%v] : %v", time.Now().Sub(start), toExec))
-
-			if err != nil {
-				log.Fatal("Error Query Line ", err, query, i)
-			}
 			defer rows.Close()
-			cols, err := rows.Columns()
+
+			logs.Infof(fmt.Sprintf(" Query : [%v] : %v", time.Now().Sub(start), toExec))
 			if err != nil {
-				log.Printf("E! No columns returned %v", err)
-				return
+				logs.Fatalf("Error Query Line ", err, query, i)
 			}
-			if cols == nil {
-				log.Printf("E! No columns returned")
+
+			cols, err := rows.Columns()
+			if err != nil || cols == nil {
+				logs.Errorf("No columns returned %v", err)
 				return
 			}
 
@@ -209,25 +197,33 @@ func (m *memsql) runQuery(client *sql.DB, queryLines []string) []interface{} {
 
 			for rows.Next() {
 				row := make(map[string]interface{})
-				err = rows.Scan(vals...)
-				if err != nil {
+				if err := rows.Scan(vals...); err != nil {
 					fmt.Println(err)
 					continue
 				}
+
 				for i := 0; i < len(vals); i++ {
 					row[cols[i]] = m.returnValue(vals[i].(*interface{}))
 				}
 
+				// TODO :: check is append is thread-safe
 				results = append(results, row)
 
 			}
 			if rows.Err() != nil {
-				log.Printf("E! Error sanning rows %v", err)
+				logs.Errorf("Error scaning rows %v", err)
 			}
+			allResults[i] = &results
 		}(i, query)
 	}
 	wg.Wait()
-	return results
+
+	outResults := make([]interface{}, 0)
+	for _, results := range allResults {
+		outResults = append(outResults, (*results)...)
+	}
+
+	return outResults
 }
 
 func init() {
